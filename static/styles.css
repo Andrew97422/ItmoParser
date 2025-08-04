@@ -1,0 +1,463 @@
+:root {
+    --teal: #20c997;
+    --teal-dark: #1aa179;
+    --teal-light: #d1f3ea;
+    --gray: #e9ecef;
+    --gray-dark: #adb5bd;
+
+    /* Цвета для светлой темы */
+    --bg-color: #f8f9fa;
+    --text-color: #212529;
+    --card-bg: #ffffff;
+    --table-hover: rgba(32, 201, 151, 0.1);
+    --border-color: #dee2e6;
+}
+
+body.dark-mode {
+    --bg-color: #212529;
+    --text-color: #f8f9fa;
+    --card-bg: #2c3034;
+    --table-hover: rgba(32, 201, 151, 0.2);
+    --border-color: #495057;
+    --gray: #495057;
+    --gray-dark: #6c757d;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-y: hidden; /* Убираем глобальную прокрутку */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.equal-height {
+    align-items: stretch;
+    min-height: calc(100vh - 180px);
+}
+
+.bg-teal {
+    background-color: var(--teal) !important;
+}
+
+.btn-teal {
+    background-color: var(--teal);
+    border-color: var(--teal);
+    color: white;
+}
+
+.btn-teal:hover {
+    background-color: var(--teal-dark);
+    border-color: var(--teal-dark);
+    color: white;
+}
+
+.btn-outline-teal {
+    color: var(--teal);
+    border-color: var(--teal);
+}
+
+.btn-outline-teal:hover {
+    background-color: var(--teal-light);
+    color: var(--teal-dark);
+}
+
+.btn-outline-teal.active {
+    background-color: var(--teal);
+    color: white;
+}
+
+.table-teal {
+    background-color: var(--teal);
+    color: white;
+}
+
+.badge-teal {
+    background-color: var(--teal);
+    color: white;
+}
+
+.badge-gray {
+    background-color: var(--gray);
+    color: var(--text-color);
+}
+
+.card {
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    background-color: var(--card-bg);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.table-container {
+    height: calc(100vh - 220px);
+    overflow-y: auto;
+}
+
+.table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: var(--card-bg);
+}
+
+.table tbody tr:hover {
+    background-color: var(--table-hover);
+}
+
+/* Стили для цифр с "горизонтальным аккордеоном" */
+.number-highlight {
+    display: inline-block;
+    background-color: var(--teal-light);
+    color: var(--teal-dark);
+    padding: 0.15rem 0.5rem;
+    border-radius: 0.25rem;
+    margin: 0 0.15rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.number-highlight:hover {
+    background-color: var(--teal);
+    color: white;
+    transform: scale(1.05);
+}
+
+@media (max-width: 992px) {
+    .equal-height {
+        min-height: auto;
+        display: block;
+    }
+
+    .col-lg-3, .col-lg-9 {
+        width: 100%;
+    }
+
+    .table-container {
+        height: auto;
+        max-height: 400px;
+    }
+}
+
+.form-select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2320c997' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+}
+
+.card-header small {
+    opacity: 0.9;
+    font-size: 0.8rem;
+}
+
+.badge.ms-2 {
+    margin-left: 0.5rem !important;
+}
+
+.table-container {
+    height: calc(100vh - 240px);
+}
+
+/* Стили для кнопки переключения темы */
+.theme-toggle {
+    z-index: 1000;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+body.dark-mode .theme-toggle {
+    background-color: #343a40;
+    border-color: #495057;
+    color: #f8f9fa;
+}
+
+body.dark-mode {
+    --bg-color: #161b22;           /* Глубокий графитовый */
+    --text-color: #f0f4f8;         /* Почти белый, мягкий */
+    --card-bg: #23272f;            /* Фон карточек чуть светлее фона */
+    --table-hover: rgba(32, 201, 151, 0.10); /* Мягкий акцент при наведении */
+    --border-color: #283043;
+    --gray: #343a40;               /* Глубокий серый */
+    --gray-dark: #6c757d;          /* Более явный контраст */
+    --teal: #20e3b2;               /* Чуть ярче акцент */
+    --teal-dark: #16bb97;
+    --teal-light: #163c39;         /* Тёмно-бирюзовый для фона выделения */
+}
+
+/* Улучшаем badge на тёмном фоне */
+body.dark-mode .badge-gray {
+    background-color: #23272f;
+    color: #cee8fa;
+    border: 1px solid #374151;
+}
+
+/* Числа, выделения */
+body.dark-mode .number-highlight {
+    background-color: #203033;
+    color: #20e3b2;
+}
+body.dark-mode .number-highlight:hover {
+    background-color: #20e3b2;
+    color: #161b22;
+}
+
+/* Кнопки */
+body.dark-mode .btn-teal {
+    background-color: var(--teal);
+    border-color: var(--teal-dark);
+    color: #161b22;
+}
+body.dark-mode .btn-teal:hover {
+    background-color: var(--teal-dark);
+    border-color: var(--teal-dark);
+    color: #fff;
+}
+
+/* Outline-кнопка */
+body.dark-mode .btn-outline-teal {
+    color: var(--teal);
+    border-color: var(--teal);
+}
+body.dark-mode .btn-outline-teal:hover {
+    background-color: var(--teal-light);
+    color: var(--teal);
+}
+body.dark-mode .btn-outline-teal.active {
+    background-color: var(--teal);
+    color: #161b22;
+}
+
+/* Заголовки таблиц */
+body.dark-mode .table thead th {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Фон для .card */
+body.dark-mode .card {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,0.24);
+}
+
+/* Тень и плавность переключения */
+body.dark-mode .card,
+body.dark-mode .btn,
+body.dark-mode .badge,
+body.dark-mode .theme-toggle {
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+/* Фон для бокса переключателя темы */
+body.dark-mode .theme-toggle {
+    background-color: #23272f;
+    border-color: #374151;
+    color: var(--teal);
+}
+
+/* Подсветка выделенных строк таблицы */
+body.dark-mode .table tbody tr:hover {
+    background-color: rgba(32, 227, 178, 0.07);
+}
+
+/* Фикс для select и стрелочки */
+body.dark-mode .form-select {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border-color: var(--border-color);
+    /* Тёмная стрелка */
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2320e3b2' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+}
+
+/* Опционально: убираем светлую подсветку у input/select в фокусе */
+body.dark-mode input:focus,
+body.dark-mode select:focus {
+    border-color: var(--teal);
+    box-shadow: 0 0 0 0.2rem rgba(32, 227, 178, 0.15);
+}
+/* Базовые числа */
+body.dark-mode .number-highlight {
+    background-color: #22313d; /* глубокий тёмно-синий */
+    color: #32ffd2;            /* яркий бирюзовый */
+    border: 1.5px solid #20e3b2;
+    box-shadow: 0 1px 5px 0 rgba(32, 227, 178, 0.10);
+}
+
+/* Для числа с классом .text-primary */
+body.dark-mode .number-highlight .text-primary {
+    color: #60aaff !important;
+}
+body.dark-mode .number-highlight .text-info {
+    color: #66fff7 !important;
+}
+body.dark-mode .number-highlight .text-success {
+    color: #21ff7a !important;
+}
+
+body.dark-mode .number-highlight:hover {
+    background-color: #20e3b2;
+    color: #22313d;
+    box-shadow: 0 2px 12px 0 rgba(32, 227, 178, 0.24);
+}
+/* Для шапки таблицы */
+body.dark-mode .table-teal thead,
+body.dark-mode .table-teal.sticky-top thead {
+    background-color: #22313d !important;
+}
+
+body.dark-mode .table-teal thead th,
+body.dark-mode .table-teal.sticky-top th {
+    color: #32ffd2 !important;
+    border-bottom: 2px solid #20e3b2;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    background-color: #22313d !important;
+}
+/* Карточка-фильтр */
+body.dark-mode .card {
+    background-color: #1c232b;
+    border-color: #22313d;
+}
+
+/* Хедер карточки (бирюзовый) */
+body.dark-mode .card-header.bg-teal {
+    background-color: #20e3b2 !important;
+    color: #22313d !important;
+}
+
+/* Инпуты и select */
+body.dark-mode .form-control,
+body.dark-mode .form-select {
+    background-color: #232b36;
+    color: #e4f8ff;
+    border-color: #20e3b2;
+}
+
+body.dark-mode .form-control:focus,
+body.dark-mode .form-select:focus {
+    background-color: #283142;
+    color: #fff;
+    border-color: #32ffd2;
+    box-shadow: 0 0 0 2px rgba(32,227,178,.25);
+}
+
+body.dark-mode .form-label {
+    color: #d6e9f8;
+}
+body.dark-mode .btn-outline-teal {
+    color: #32ffd2 !important;
+    border-color: #32ffd2 !important;
+    background: none !important;
+}
+
+body.dark-mode .btn-outline-teal:hover,
+body.dark-mode .btn-outline-teal.active,
+body.dark-mode .btn-outline-teal:active {
+    background-color: #20e3b2 !important;
+    color: #22313d !important;
+    border-color: #20e3b2 !important;
+}
+body.dark-mode .btn-teal {
+    background-color: #20e3b2 !important;
+    border-color: #32ffd2 !important;
+    color: #13171c !important;
+    font-weight: bold;
+}
+body.dark-mode .btn-teal:hover {
+    background-color: #32ffd2 !important;
+    color: #13171c !important;
+}
+body.dark-mode .alert-info {
+    background-color: #183046 !important;
+    border-color: #1f9bad !important;
+    color: #b7eaff !important;
+}
+
+body.dark-mode .alert-info strong {
+    color: #fff !important;
+}
+body.dark-mode .table,
+body.dark-mode .table-striped,
+body.dark-mode .table-hover {
+    background-color: #1a232b;
+    color: #e6f3fd;
+}
+
+body.dark-mode .table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: #222d37;
+}
+
+body.dark-mode .table tbody tr {
+    border-color: #233141; /* для четкой сетки */
+}
+
+body.dark-mode .table-success {
+    background-color: #1a4736 !important;
+    color: #a7ffd8 !important;
+}
+body.dark-mode .table thead,
+body.dark-mode .table-teal thead,
+body.dark-mode .table-teal.sticky-top thead {
+    background-color: #212c37 !important;
+}
+
+body.dark-mode .table thead th,
+body.dark-mode .table-teal thead th,
+body.dark-mode .table-teal.sticky-top th {
+    color: #54ffe0 !important;
+    background-color: #212c37 !important;
+    border-bottom: 2.5px solid #20e3b2;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+}
+body.dark-mode .table td {
+    background-color: transparent; /* оставим прозрачным над своими фонами */
+    color: #e6f3fd;
+}
+
+body.dark-mode .badge.bg-teal {
+    background-color: #20e3b2 !important;
+    color: #22323d !important;
+}
+
+body.dark-mode .badge.bg-gray,
+body.dark-mode .badge.bg-secondary {
+    background-color: #394150 !important;
+    color: #9cb8cd !important;
+}
+body.dark-mode .alert,
+body.dark-mode .table,
+body.dark-mode .card {
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+body.dark-mode .btn-outline-teal.active,
+body.dark-mode .btn-outline-teal:active,
+body.dark-mode .btn-outline-teal:focus,
+body.dark-mode .btn-outline-teal:hover,
+body.dark-mode .btn-check:checked + .btn-outline-teal,
+body.dark-mode .btn-check:active + .btn-outline-teal,
+body.dark-mode .btn-check:focus + .btn-outline-teal {
+    background-color: #20e3b2 !important;
+    color: #122326 !important;
+    border-color: #20e3b2 !important;
+    box-shadow: 0 2px 8px 0 rgba(32,227,178,0.10);
+    font-weight: bold;
+    z-index: 1;
+}
+body.dark-mode .form-control::placeholder {
+    color: #bad7e0;
+    opacity: 1;
+}
+.d-flex .form-check.form-switch {
+    display: flex !important;
+    align-items: center;
+    margin-bottom: 0;     /* на всякий случай */
+}
