@@ -394,9 +394,10 @@
                 if (myApplicationId && app.application_id === myApplicationId) {
                     tr.classList.add('my-row');
                 }
-                tr.innerHTML = `<td>${app.filtered_position}</td>
+                tr.innerHTML = `
+                    <td>${app.filtered_position}</td>
                     <td>${app.position}</td>
-                    <td>${app.application_id}</td>
+                    <td><span class="number-highlight" onclick="copyToClipboard(this.textContent)">${app.application_id}</span></td>
                     <td>${app.exam_type}</td>
                     <td>${app.exam_score}</td>
                     <td>${app.total_score}</td>
@@ -404,8 +405,20 @@
                     <td>${app.priority}</td>
                     <td><span class="badge bg-${app.ovp ? 'teal' : 'secondary'}">${app.ovp ? 'Да' : 'Нет'}</span></td>
                     <td><span class="badge bg-${app.vpp ? 'teal' : 'secondary'}">${app.vpp ? 'Да' : 'Нет'}</span></td>
-                    <td><span class="badge bg-${app.consent ? 'teal' : 'soft-red'}">${app.consent ? 'Да' : 'Нет'}</span></td>`;
+                    <td><span class="badge bg-${app.consent ? 'teal' : 'soft-red'}">${app.consent ? 'Да' : 'Нет'}</span></td>
+                `;
                 tbody.appendChild(tr);
+            });
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                console.log('Скопировано: ' + text); // Для отладки
+                // Опционально: Показать toast или алерт
+                alert('Номер ' + text + ' скопирован в буфер обмена!');
+            }).catch(function(err) {
+                console.error('Ошибка копирования: ', err);
+                alert('Ошибка копирования. Попробуйте выделить и скопировать вручную.');
             });
         }
 

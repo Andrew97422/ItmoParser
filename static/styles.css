@@ -403,8 +403,8 @@ body.dark-mode .form-control::placeholder {
 
 .table tbody tr {
     animation: fadeIn .3s ease-in-out;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-radius 0.2s ease, z-index 0s;
-    position: relative;
+    transition: transform .2s ease,box-shadow .2s ease,border-radius .2s ease,z-index 0s;
+    position: relative
 }
 
 th.sortable {
@@ -536,10 +536,10 @@ body.dark-mode .stat-pill:hover {
 }
 
 .table tr.my-row {
-    background: linear-gradient(to bottom, rgba(32, 201, 151, 0.5), rgba(32, 201, 151, 0.4)) !important;
-    box-shadow: inset 0 3px 10px rgba(32, 201, 151, 0.4), 0 5px 14px rgba(0, 0, 0, 0.2);
-    border: 2px solid rgba(32, 201, 151, 0.7) !important;
-    animation: pulse-highlight 2s infinite;
+    background: linear-gradient(to bottom,rgba(32,201,151,.5),rgba(32,201,151,.4))!important;
+    box-shadow: inset 0 3px 10px rgba(32,201,151,.4),0 5px 14px rgba(0,0,0,.2);
+    border: 2px solid rgba(32,201,151,.7)!important;
+    animation: pulse-highlight 2s infinite
 }
 
 .table tr.my-row td:first-child::before {
@@ -558,15 +558,15 @@ body.dark-mode .stat-pill:hover {
 }
 
 .table tr.my-row:hover {
-    background: linear-gradient(to bottom, rgba(32, 201, 151, 0.6), rgba(32, 201, 151, 0.5)) !important;
-    box-shadow: inset 0 5px 14px rgba(32, 201, 151, 0.5), 0 10px 28px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(to bottom,rgba(32,201,151,.6),rgba(32,201,151,.5))!important;
+    box-shadow: inset 0 5px 14px rgba(32,201,151,.5),0 10px 28px rgba(0,0,0,.3)
 }
 
 body.dark-mode .table tr.my-row {
-    background: linear-gradient(to bottom, rgba(32, 227, 178, 0.55), rgba(32, 227, 178, 0.45)) !important;
-    box-shadow: inset 0 3px 10px rgba(32, 227, 178, 0.45), 0 5px 14px rgba(32, 227, 178, 0.5);
-    border: 2px solid rgba(32, 227, 178, 0.8) !important;
-    animation: pulse-highlight-dark 2s infinite;
+    background: linear-gradient(to bottom,rgba(32,227,178,.55),rgba(32,227,178,.45))!important;
+    box-shadow: inset 0 3px 10px rgba(32,227,178,.45),0 5px 14px rgba(32,227,178,.5);
+    border: 2px solid rgba(32,227,178,.8)!important;
+    animation: pulse-highlight-dark 2s infinite
 }
 
 body.dark-mode .table tr.my-row td:first-child {
@@ -574,8 +574,8 @@ body.dark-mode .table tr.my-row td:first-child {
 }
 
 body.dark-mode .table tr.my-row:hover {
-    background: linear-gradient(to bottom, rgba(32, 227, 178, 0.65), rgba(32, 227, 178, 0.55)) !important;
-    box-shadow: inset 0 5px 14px rgba(32, 227, 178, 0.5), 0 10px 28px rgba(32, 227, 178, 0.6);
+    background: linear-gradient(to bottom,rgba(32,227,178,.65),rgba(32,227,178,.55))!important;
+    box-shadow: inset 0 5px 14px rgba(32,227,178,.5),0 10px 28px rgba(32,227,178,.6)
 }
 
 .table tr.my-row td:first-child {
@@ -590,84 +590,99 @@ body.dark-mode .table tr.my-row td:first-child::before {
 
 .table tbody tr:hover {
     transform: translateY(-10px) scaleY(1.03);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 20px rgba(0,0,0,.2);
     border-radius: 10px;
     background-color: var(--table-hover);
-    z-index: 10;
+    z-index: 10
 }
 
 .table-container {
     overflow-x: hidden
 }
 
-@media (max-width: 992px) {
+@media (max-width:992px) {
     body {
-        overflow-y: auto;
+        overflow-y: auto
     }
+
     .table-container {
         height: auto;
-        max-height: 50vh;
+        max-height: 50vh
     }
+
     .equal-height {
         min-height: auto;
-        display: block;
+        display: block
     }
-    .col-lg-3, .col-lg-9 {
-        width: 100%;
+
+    .col-lg-3,.col-lg-9 {
+        width: 100%
     }
-    .btn, .form-control, .form-select {
+
+    .btn,.form-control,.form-select {
         padding-top: .6rem;
         padding-bottom: .6rem;
-        font-size: 1rem;
+        font-size: 1rem
     }
-    .btn-outline-teal, .btn-teal {
-        min-height: 44px;
+
+    .btn-outline-teal,.btn-teal {
+        min-height: 44px
     }
 }
-@media (max-width: 992px) and (orientation: landscape) {
-    .card-header, .table td {
+
+@media (max-width:992px) and (orientation:landscape) {
+    .card-header,.table td {
         padding: .4rem .6rem;
-        font-size: .9rem;
+        font-size: .9rem
     }
+
     .table td {
-        padding: .3rem .5rem;
+        padding: .3rem .5rem
     }
+
     .table-container {
-        max-height: none;
+        max-height: none
     }
+
     .table thead th {
         padding-top: .3rem;
         padding-bottom: .3rem;
-        font-size: .85rem;
+        font-size: .85rem
     }
+
     .card-body {
-        padding: .5rem;
+        padding: .5rem
     }
+
     .table-container {
-        height: calc(100vh - 120px) !important;
+        height: calc(100vh - 120px)!important;
         overflow-x: auto;
-        max-height: calc(100vh - 140px);
+        max-height: calc(100vh - 140px)
     }
 }
-@supports (-webkit-touch-callout: none) and (-webkit-appearance: none) {
+
+@supports (-webkit-touch-callout:none) and (-webkit-appearance:none) {
     .table-container {
-        height: auto !important;
-        max-height: 70vh !important;
+        height: auto!important;
+        max-height: 70vh!important
     }
+
     body {
-        overflow-y: auto !important;
+        overflow-y: auto!important
     }
 }
-@media (max-width: 768px) {
+
+@media (max-width:768px) {
     .d-flex.flex-wrap.align-items-center.gap-3 {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        gap: 0.5rem;
-        padding: 0.5rem;
-        margin: 0.5rem 0 1rem 0;
-        overflow-x: hidden;
+        gap: .5rem;
+        padding: .5rem;
+        margin: .5rem 0 1rem;
+        overflow-x: hidden
     }
+
     .fs-5.me-2 {
         font-size: 1rem;
         margin: 0;
@@ -675,67 +690,76 @@ body.dark-mode .table tr.my-row td:first-child::before {
         text-align: left;
         white-space: nowrap;
         overflow: hidden;
-        text-overflow: ellipsis;
+        text-overflow: ellipsis
     }
-    .d-flex.flex-wrap.align-items-center.gap-3 > .stat-pill {
+
+    .d-flex.flex-wrap.align-items-center.gap-3>.stat-pill {
         flex: 1 0 20%;
         min-width: 0;
         padding: 4px 6px;
         border-radius: 12px;
-        margin: 0 0.25rem 0 0;
-        font-size: 0.8rem;
+        margin: 0 .25rem 0 0;
+        font-size: .8rem;
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: center
     }
+
     .stat-label {
-        font-size: 0.7rem;
-        padding: 0;
+        font-size: .7rem;
+        padding: 0
     }
+
     .stat-value {
-        font-size: 0.9rem;
-        padding: 0;
+        font-size: .9rem;
+        padding: 0
     }
-    .d-flex.flex-wrap.align-items-center.gap-3 > *:nth-child(n+2) {
+
+    .d-flex.flex-wrap.align-items-center.gap-3>:nth-child(n+2) {
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
-        gap: 0.25rem;
+        gap: .25rem;
         width: 100%;
         justify-content: space-between;
         overflow-x: auto;
-        padding-bottom: 0.25rem;
+        padding-bottom: .25rem
     }
-    .d-flex.flex-wrap.align-items-center.gap-3 > *:nth-child(n+2)::-webkit-scrollbar {
-        height: 4px;
+
+    .d-flex.flex-wrap.align-items-center.gap-3>:nth-child(n+2)::-webkit-scrollbar {
+        height: 4px
     }
-    .d-flex.flex-wrap.align-items-center.gap-3 > *:nth-child(n+2)::-webkit-scrollbar-thumb {
+
+    .d-flex.flex-wrap.align-items-center.gap-3>:nth-child(n+2)::-webkit-scrollbar-thumb {
         background: var(--teal);
-        border-radius: 4px;
+        border-radius: 4px
     }
-    .d-flex.flex-wrap.align-items-center.gap-3, .stat-pill {
-        justify-content: center;
+
+    .d-flex.flex-wrap.align-items-center.gap-3,.stat-pill {
+        justify-content: center
     }
+
     .stat-pill {
-        min-width: 120px;
+        min-width: 120px
     }
+
     .table-container {
-        overflow-x: auto;
-        overflow-y: auto;
-        max-height: 40vh;
-        -webkit-overflow-scrolling: touch;
+        max-height: 40vh
     }
+
     .table {
-        min-width: 600px;
+        min-width: 600px
     }
+
     .number-highlight {
         user-select: text;
         -webkit-user-select: text;
         cursor: pointer;
         position: relative;
-        padding: 0.2rem 0.6rem;
-        border-radius: 6px;
+        padding: .2rem .6rem;
+        border-radius: 6px
     }
+
     .number-highlight::after {
         content: "📋";
         position: absolute;
@@ -744,113 +768,205 @@ body.dark-mode .table tr.my-row td:first-child::before {
         transform: translateY(-50%);
         font-size: 1rem;
         opacity: 0;
-        transition: opacity 0.2s ease;
+        transition: opacity .2s ease
     }
-    .number-highlight:hover::after,
-    .number-highlight:active::after {
-        opacity: 1;
+
+    .number-highlight:active::after,.number-highlight:hover::after {
+        opacity: 1
     }
+
     body.dark-mode .number-highlight::after {
-        color: var(--teal);
+        color: var(--teal)
+    }
+
+    .container-fluid {
+        padding: 0;
+        margin-top: 0
+    }
+
+    .row.equal-height {
+        flex-direction: column;
+        min-height: 100vh
+    }
+
+    .col-lg-3 {
+        order: 2;
+        margin-top: 1rem
+    }
+
+    .col-lg-9 {
+        order: 1
+    }
+
+    .col-lg-9,.col-lg-9 .card,.col-lg-9 .card-body {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column
+    }
+
+    .col-lg-9 .card {
+        height: auto;
+        min-height: 50vh
+    }
+
+    .col-lg-9 .card-body {
+        padding: 0
+    }
+
+    .table-container {
+        flex-grow: 1;
+        height: auto;
+        max-height: calc(100vh - 120px);
+        overflow-y: auto;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch
+    }@    supports (height:calc(100svh - env(safe-area-inset-top))) {
+        .table-container{max-height: calc(100svh - env(safe-area-inset-top) - 80px)
     }
 }
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden
+}
+
+h1 {
+    font-size: 1.2rem;
+    margin: .5rem 0
+}
+
+.theme-toggle {
+    top: .5rem;
+    right: .5rem;
+    margin: 0
+}}
+
+.table td.consent-no,.table td.consent-yes {
+    font-weight: 700;
+    padding: .3rem .6rem;
+    border-radius: 4px;
+    text-align: center
+}
+
 .table td.consent-no {
-    background-color: var(--gray); /* Аналогично badge-gray из стилей, для выделения "Нет" как в ОВП/ВПП */
-    color: var(--text-color);
-    font-weight: bold;
-    padding: 0.3rem 0.6rem;
-    border-radius: 4px;
-    text-align: center;
+    background-color: var(--gray);
+    color: var(--text-color)
 }
+
 body.dark-mode .table td.consent-no {
-    background-color: #394150; /* Адаптация для тёмной темы, как badge-gray в dark-mode [2] */
+    background-color: #394150;
     color: #9cb8cd;
-    border: 1px solid #374151;
+    border: 1px solid #374151
 }
+
 .table td.consent-yes {
-    background-color: var(--teal); /* Убедимся, что "Да" выделяется一致но, как badge-teal [2] */
-    color: #fff;
-    font-weight: bold;
-    padding: 0.3rem 0.6rem;
-    border-radius: 4px;
-    text-align: center;
+    background-color: var(--teal);
+    color: #fff
 }
+
 body.dark-mode .table td.consent-yes {
     background-color: #20e3b2;
-    color: #22323d;
+    color: #22323d
 }
+
 .badge.bg-soft-red {
-    background-color: rgba(220, 53, 69, 0.8);
+    background-color: rgba(220,53,69,.8);
     color: #fff;
-    border: 1px solid rgba(220, 53, 69, 1);
-    font-weight: bold;
+    border: 1px solid #dc3545;
+    font-weight: 700
 }
+
 body.dark-mode .badge.bg-soft-red {
-    background-color: rgba(200, 48, 63, 0.9);
+    background-color: rgba(200,48,63,.9);
     color: #f8f9fa;
-    border: 1px solid rgba(200, 48, 63, 1);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    border: 1px solid #c8303f;
+    box-shadow: 0 1px 3px rgba(0,0,0,.2)
 }
+
 @media (max-width:992px) {
     body {
         overflow-y: auto
     }
+
     .table-container {
         height: auto;
         max-height: 50vh
     }
+
     .equal-height {
         min-height: auto;
         display: block
     }
+
     .col-lg-3,.col-lg-9 {
         width: 100%
     }
+
     .btn,.form-control,.form-select {
         padding-top: .6rem;
         padding-bottom: .6rem;
         font-size: 1rem
     }
+
     .btn-outline-teal,.btn-teal {
         min-height: 44px
     }
 }
+
 @media (max-width:992px) and (orientation:landscape) {
-    .card-header,.table td {
-        padding: .4rem .6rem;
-        font-size: .9rem
-    }
-    .table td {
-        padding: .3rem .5rem
-    }
     .table-container {
-        max-height: none
+        height: calc(100vh - 60px)!important;
+        max-height: 100vh;
+        overflow-y: auto;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch
     }
-    .table thead th {
-        padding-top: .3rem;
-        padding-bottom: .3rem;
-        font-size: .85rem
+
+    .col-lg-9 .card {
+        height: 100vh;
+        margin: 0;
+        border: 0;
+        box-shadow: none
     }
-    .card-body {
-        padding: .5rem
+
+    .col-lg-9 .card-body {
+        padding: 0
     }
-    .table-container {
-        height: calc(100vh - 120px)!important
+
+    .col-lg-3 {
+        display: none
     }
-}
+
+    .card-header,h1 {
+        font-size: 1rem;
+        padding: .5rem;
+        margin: 0
+    }
+
+    .theme-toggle {
+        display: none
+    }@    supports (height:calc(100svh - env(safe-area-inset-top))) {
+        .table-container{height: calc(100svh - env(safe-area-inset-top) - 40px)
+    }
+}}
+
 @media (max-width:768px) {
     .d-flex.flex-wrap.align-items-center.gap-3,.stat-pill {
         justify-content: center
     }
+
     .stat-pill {
         min-width: 120px
     }
 }
+
 @supports (-webkit-touch-callout:none) and (-webkit-appearance:none) {
     .table-container {
         height: auto!important;
         max-height: 70vh!important
     }
+
     body {
         overflow-y: auto!important
     }
