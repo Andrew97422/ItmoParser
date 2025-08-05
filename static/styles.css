@@ -37,8 +37,24 @@ body {
 
     .table-container {
         height: auto;
-        max-height: 400px;
-        overflow-y: auto;
+        max-height: 50vh;
+    }
+}
+
+@media (max-width: 992px) and (orientation: landscape) {
+    .table-container {
+        max-height: 70vh; /* Увеличиваем до 70% высоты вьюпорта в ландшафтном режиме */
+    }
+
+    /* Уменьшаем отступы и размеры для более компактного отображения */
+    .card-header, .card-body {
+        padding: 0.75rem;
+    }
+
+    /* Уменьшаем размер шрифта для заголовков в таблице для горизонтального режима */
+    .table thead th {
+        font-size: 0.9rem;
+        padding: 0.5rem;
     }
 }
 
@@ -143,11 +159,6 @@ body {
 
     .col-lg-3, .col-lg-9 {
         width: 100%;
-    }
-
-    .table-container {
-        height: auto;
-        max-height: 400px;
     }
 }
 
