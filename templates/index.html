@@ -9,23 +9,28 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <meta name="turbo-visit-control" content="reload">
     <style>
-        th.sortable {
-            cursor: pointer;
-            user-select: none;
-            white-space: nowrap;
+        #abitTbody tr.my-row {
+            background-color: rgba(32, 201, 151, 0.15) !important;
+            position: relative !important;
         }
-        th .sort-arrow {
-            font-size: 1em;
-            vertical-align: middle;
-            margin-left: .35em;
-            color: #2bba85;
-            opacity: .8;
+
+        @keyframes pulse-highlight {
+            0%, 100% { background-color: rgba(32, 201, 151, 0.15) !important; }
+            50% { background-color: rgba(32, 201, 151, 0.25) !important; }
         }
-        th.active-sort {
-            background-color: #d1f3ea !important;
+
+        #abitTbody tr.my-row {
+            animation: pulse-highlight 2s infinite !important;
         }
-        body.dark-mode th.active-sort {
-            background-color: #203033 !important;
+
+        @keyframes pulse-highlight-dark {
+            0%, 100% { background-color: rgba(32, 227, 178, 0.18) !important; }
+            50% { background-color: rgba(32, 227, 178, 0.28) !important; }
+        }
+
+        body.dark-mode #abitTbody tr.my-row {
+            animation: pulse-highlight-dark 2s infinite !important;
+            background-color: rgba(32, 227, 178, 0.18) !important;
         }
     </style>
 </head>
@@ -197,6 +202,35 @@
                         <h5 class="mb-0">Результаты : {{ filtered_count }} записей</h5>
                     </div>
                     <div class="card-body p-0">
+                        {% if stats and 'my_row' in stats %}
+                        <script>
+                            window.myApplicationId = "{{ stats.my_row.application_id }}";
+                        </script>
+                        <div class="d-flex flex-wrap align-items-center gap-3">
+                            <strong class="fs-5 me-2">Перед вами ({{ stats.my_row.filtered_position }} место):</strong>
+
+                            <div class="stat-pill" data-bs-toggle="tooltip" title="Всего абитуриентов">
+                                <span class="stat-label">Всего</span>
+                                <span class="stat-value">{{ stats.total_before_me }}</span>
+                            </div>
+
+                            <div class="stat-pill" data-bs-toggle="tooltip" title="С льготами БВИ">
+                                <span class="stat-label">БВИ</span>
+                                <span class="stat-value text-primary">{{ stats.bvi_before }}</span>
+                            </div>
+
+                            <div class="stat-pill" data-bs-toggle="tooltip" title="С особым правом">
+                                <span class="stat-label">ОВП</span>
+                                <span class="stat-value text-info">{{ stats.ovp_before }}</span>
+                            </div>
+
+                            <div class="stat-pill" data-bs-toggle="tooltip" title="Подали согласие">
+                                <span class="stat-label">Согласия</span>
+                                <span class="stat-value text-success">{{ stats.consent_before }}</span>
+                            </div>
+                        </div>
+                        {% endif %}
+
                         {% if applicants %}
                         <script>
                             window.abitData = {{ applicants | tojson }};
@@ -354,10 +388,13 @@
         function renderTable(dataArr) {
             const tbody = document.getElementById('abitTbody');
             tbody.innerHTML = '';
+            const myApplicationId = window.myApplicationId || null;
             dataArr.forEach(app => {
                 const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${app.filtered_position}</td>
+                if (myApplicationId && app.application_id === myApplicationId) {
+                    tr.classList.add('my-row');
+                }
+                tr.innerHTML = `<td>${app.filtered_position}</td>
                     <td>${app.position}</td>
                     <td>${app.application_id}</td>
                     <td>${app.exam_type}</td>
@@ -367,8 +404,7 @@
                     <td>${app.priority}</td>
                     <td><span class="badge bg-${app.ovp ? 'teal' : 'secondary'}">${app.ovp ? 'Да' : 'Нет'}</span></td>
                     <td><span class="badge bg-${app.vpp ? 'teal' : 'secondary'}">${app.vpp ? 'Да' : 'Нет'}</span></td>
-                    <td><span class="badge bg-${app.consent ? 'teal' : 'gray'}">${app.consent ? 'Да' : 'Нет'}</span></td>
-                `;
+                    <td><span class="badge bg-${app.consent ? 'teal' : 'gray'}">${app.consent ? 'Да' : 'Нет'}</span></td>`;
                 tbody.appendChild(tr);
             });
         }
@@ -447,5 +483,65 @@
         updateHeaderSortVisual();
     });
     </script>
+    {% if stats and 'my_row' in stats %}
+    <script>
+        // Добавляем эту функцию после загрузки страницы и всех скриптов
+        window.addEventListener('load', function() {
+            // Находим нужное ID
+            const myId = "{{ stats.my_row.application_id }}";
+            console.log("Ищем ID:", myId);
+            // Находим все строки таблицы
+            const rows = document.querySelectorAll('#abitTbody tr');
+            // Проверяем каждую строку
+            rows.forEach(row => {
+                // Ищем ячейку с ID заявления (3-я колонка, индекс 2)
+                const idCell = row.querySelector('td:nth-child(3)');
+                if (idCell && idCell.textContent === myId) {
+                    console.log("Найдена строка для ID:", myId);
+                    // Напрямую устанавливаем стиль без класса
+                    row.style.backgroundColor = 'rgba(32, 201, 151, 0.2)';
+                    // Прокручиваем к этой строке
+                    row.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                }
+            });
+        });
+    </script>
+    {% endif %}
+    <script>
+    // Этот скрипт выполняется после загрузки страницы
+    document.addEventListener('DOMContentLoaded', function() {
+        // Для отладки - выводим в консоль ID
+        console.log("Ищем строку для ID:", window.myApplicationId);
+
+        // Функция, которая будет пытаться найти и выделить строку
+        function highlightMyRow() {
+            if (!window.myApplicationId) return;
+
+            const rows = document.querySelectorAll('#abitTbody tr');
+            let found = false;
+
+            rows.forEach(function(row) {
+                const cells = row.querySelectorAll('td');
+                if (cells.length > 2 && cells[2].textContent.trim() === window.myApplicationId) {
+                    console.log("Нашли строку для ID:", window.myApplicationId);
+                    row.classList.add('my-row');
+                    found = true;
+                }
+            });
+
+            return found;
+        }
+
+        // Пытаемся найти сразу
+        if (!highlightMyRow()) {
+            // Если не удалось найти сразу, пробуем еще раз через секунду
+            setTimeout(highlightMyRow, 1000);
+        }
+    });
+    </script>
+
 </body>
 </html>
