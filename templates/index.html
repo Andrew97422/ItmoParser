@@ -372,129 +372,160 @@
         });
     </script>
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        let allData = window.abitData || [];
-        let data = [...allData]; // изначальный порядок
-
-        // Сортировка: массив [{field, direction}] — первое поле главное, вторые и далее — по важности
-        let sortState = []; // [{field, dir}] dir=1(asc), -1(desc)
-
-        // Все sortable th
-        const headers = Array.from(document.querySelectorAll('#abitTable th.sortable'));
-        // Мапа: field -> th
-        const headersMap = {};
-        headers.forEach(th => headersMap[th.dataset.field] = th);
-
-        function renderTable(dataArr) {
-            const tbody = document.getElementById('abitTbody');
-            tbody.innerHTML = '';
-            const myApplicationId = window.myApplicationId || null;
-            dataArr.forEach(app => {
-                const tr = document.createElement('tr');
-                if (myApplicationId && app.application_id === myApplicationId) {
-                    tr.classList.add('my-row');
-                }
-                tr.innerHTML = `
-                    <td>${app.filtered_position}</td>
-                    <td>${app.position}</td>
-                    <td><span class="number-highlight" onclick="copyToClipboard(this.textContent)">${app.application_id}</span></td>
-                    <td>${app.exam_type}</td>
-                    <td>${app.exam_score}</td>
-                    <td>${app.total_score}</td>
-                    <td>${Number(app.average_score).toFixed(4)}</td>
-                    <td>${app.priority}</td>
-                    <td><span class="badge bg-${app.ovp ? 'teal' : 'secondary'}">${app.ovp ? 'Да' : 'Нет'}</span></td>
-                    <td><span class="badge bg-${app.vpp ? 'teal' : 'secondary'}">${app.vpp ? 'Да' : 'Нет'}</span></td>
-                    <td><span class="badge bg-${app.consent ? 'teal' : 'soft-red'}">${app.consent ? 'Да' : 'Нет'}</span></td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(function() {
                 console.log('Скопировано: ' + text); // Для отладки
-                // Опционально: Показать toast или алерт
-                alert('Номер ' + text + ' скопирован в буфер обмена!');
+                showToast('Скопировано!', 'Номер ' + text + ' в буфере обмена.', 'success');
             }).catch(function(err) {
                 console.error('Ошибка копирования: ', err);
-                alert('Ошибка копирования. Попробуйте выделить и скопировать вручную.');
+                showToast('Ошибка', 'Не удалось скопировать. Попробуйте вручную.', 'danger');
             });
         }
+        function showToast(title, message, type = 'success') {
+            const container = document.querySelector('.toast-container');
+            if (!container) return; // Если контейнер не найден, ничего не делать
 
-        // Рисуем стрелки и выделение в th (отмечаем только первое поле из sortState)
-        function updateHeaderSortVisual() {
-            headers.forEach(th => {
-                th.classList.remove('active-sort');
-                th.querySelector('.sort-arrow').textContent = '';
+            // Создаём toast динамически
+            const toastEl = document.createElement('div');
+            toastEl.classList.add('toast', 'custom-toast', 'align-items-center', 'text-bg-' + type, 'border-0');
+            toastEl.setAttribute('role', 'alert');
+            toastEl.setAttribute('aria-live', 'assertive');
+            toastEl.setAttribute('aria-atomic', 'true');
+
+            toastEl.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <strong>${title}</strong><br>${message}
+                    </div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            `;
+
+            container.appendChild(toastEl);
+            const bsToast = new bootstrap.Toast(toastEl, {
+                    animation: true,
+                    autohide: true,
+                    delay: 2000
             });
-            if(sortState.length === 0) return;
-            let first = sortState[0];
-            let th = headersMap[first.field];
-            th.classList.add('active-sort');
-            const arrow = th.querySelector('.sort-arrow');
-            if (first.dir === 1) arrow.textContent = '▲';
-            else if (first.dir === -1) arrow.textContent = '▼';
-            else arrow.textContent = '';
+            bsToast.show();
+
+            // Автоудаление после скрытия, чтобы не засорять DOM
+            toastEl.addEventListener('hidden.bs.toast', () => {
+                toastEl.remove();
+            });
         }
+        document.addEventListener('DOMContentLoaded', function() {
+            let allData = window.abitData || [];
+            let data = [...allData]; // изначальный порядок
 
-        // Функция для сравнения по массиву полей
-        function multiCompare(a, b) {
-            for (let s of sortState) {
-                let field = s.field, dir = s.dir;
-                let va = a[field], vb = b[field];
+            // Сортировка: массив [{field, direction}] — первое поле главное, вторые и далее — по важности
+            let sortState = []; // [{field, dir}] dir=1(asc), -1(desc)
 
-                // Для boolean-полей
-                if (typeof va === "boolean") {
-                    va = va ? 1 : 0;
-                    vb = vb ? 1 : 0;
-                }
-                // Для числовых
-                if (!isNaN(parseFloat(va)) && !isNaN(parseFloat(vb)) && (typeof va !== "string" || va.trim() !== "")) {
-                    va = parseFloat(va);
-                    vb = parseFloat(vb);
-                }
-                // Сравнение
-                if (va < vb) return -1 * dir;
-                if (va > vb) return 1 * dir;
-            }
-            return 0;
-        }
+            // Все sortable th
+            const headers = Array.from(document.querySelectorAll('#abitTable th.sortable'));
+            // Мапа: field -> th
+            const headersMap = {};
+            headers.forEach(th => headersMap[th.dataset.field] = th);
 
-        // Клик по заголовку — циклическая сортировка: asc ➔ desc ➔ off
-        headers.forEach(th => {
-            th.addEventListener('click', function(e) {
-                const field = th.getAttribute('data-field');
-                // ищем поле в sortState
-                let idx = sortState.findIndex(f => f.field === field);
-                if (idx === -1) {
-                    // новое поле — делаем первым, asc
-                    sortState.unshift({field: field, dir: 1});
-                } else {
-                    // поле уже в sortState — меняем режим
-                    if (sortState[idx].dir === 1) {
-                        sortState[idx].dir = -1;
-                    } else if (sortState[idx].dir === -1) {
-                        sortState.splice(idx, 1);
+            function renderTable(dataArr) {
+                const tbody = document.getElementById('abitTbody');
+                tbody.innerHTML = '';
+                const myApplicationId = window.myApplicationId || null;
+                dataArr.forEach(app => {
+                    const tr = document.createElement('tr');
+                    if (myApplicationId && app.application_id === myApplicationId) {
+                        tr.classList.add('my-row');
                     }
-                }
-                // После клика — всегда делаем кликнутый столбец на первое место
-                sortState = [
-                    ...sortState.filter(f => f.field === field),
-                    ...sortState.filter(f => f.field !== field)
-                ];
-                // Если ничего не осталось — показываем в исходном порядке
-                let sorted = sortState.length === 0 ? [...allData] : [...data].sort(multiCompare);
-                renderTable(sorted);
-                updateHeaderSortVisual();
-                data = [...sorted];
-            });
-        });
+                    tr.innerHTML = `
+                        <td>${app.filtered_position}</td>
+                        <td>${app.position}</td>
+                        <td><span class="number-highlight" onclick="copyToClipboard(this.textContent)">${app.application_id}</span></td>
+                        <td>${app.exam_type}</td>
+                        <td>${app.exam_score}</td>
+                        <td>${app.total_score}</td>
+                        <td>${Number(app.average_score).toFixed(4)}</td>
+                        <td>${app.priority}</td>
+                        <td><span class="badge bg-${app.ovp ? 'teal' : 'secondary'}">${app.ovp ? 'Да' : 'Нет'}</span></td>
+                        <td><span class="badge bg-${app.vpp ? 'teal' : 'secondary'}">${app.vpp ? 'Да' : 'Нет'}</span></td>
+                        <td><span class="badge bg-${app.consent ? 'teal' : 'soft-red'}">${app.consent ? 'Да' : 'Нет'}</span></td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
 
-        // Первичный рендер
-        renderTable(data);
-        updateHeaderSortVisual();
-    });
+            // Рисуем стрелки и выделение в th (отмечаем только первое поле из sortState)
+            function updateHeaderSortVisual() {
+                headers.forEach(th => {
+                    th.classList.remove('active-sort');
+                    th.querySelector('.sort-arrow').textContent = '';
+                });
+                if(sortState.length === 0) return;
+                let first = sortState[0];
+                let th = headersMap[first.field];
+                th.classList.add('active-sort');
+                const arrow = th.querySelector('.sort-arrow');
+                if (first.dir === 1) arrow.textContent = '▲';
+                else if (first.dir === -1) arrow.textContent = '▼';
+                else arrow.textContent = '';
+            }
+
+            // Функция для сравнения по массиву полей
+            function multiCompare(a, b) {
+                for (let s of sortState) {
+                    let field = s.field, dir = s.dir;
+                    let va = a[field], vb = b[field];
+
+                    // Для boolean-полей
+                    if (typeof va === "boolean") {
+                        va = va ? 1 : 0;
+                        vb = vb ? 1 : 0;
+                    }
+                    // Для числовых
+                    if (!isNaN(parseFloat(va)) && !isNaN(parseFloat(vb)) && (typeof va !== "string" || va.trim() !== "")) {
+                        va = parseFloat(va);
+                        vb = parseFloat(vb);
+                    }
+                    // Сравнение
+                    if (va < vb) return -1 * dir;
+                    if (va > vb) return 1 * dir;
+                }
+                return 0;
+            }
+
+            // Клик по заголовку — циклическая сортировка: asc ➔ desc ➔ off
+            headers.forEach(th => {
+                th.addEventListener('click', function(e) {
+                    const field = th.getAttribute('data-field');
+                    // ищем поле в sortState
+                    let idx = sortState.findIndex(f => f.field === field);
+                    if (idx === -1) {
+                        // новое поле — делаем первым, asc
+                        sortState.unshift({field: field, dir: 1});
+                    } else {
+                        // поле уже в sortState — меняем режим
+                        if (sortState[idx].dir === 1) {
+                            sortState[idx].dir = -1;
+                        } else if (sortState[idx].dir === -1) {
+                            sortState.splice(idx, 1);
+                        }
+                    }
+                    // После клика — всегда делаем кликнутый столбец на первое место
+                    sortState = [
+                        ...sortState.filter(f => f.field === field),
+                        ...sortState.filter(f => f.field !== field)
+                    ];
+                    // Если ничего не осталось — показываем в исходном порядке
+                    let sorted = sortState.length === 0 ? [...allData] : [...data].sort(multiCompare);
+                    renderTable(sorted);
+                    updateHeaderSortVisual();
+                    data = [...sorted];
+                });
+            });
+
+            // Первичный рендер
+            renderTable(data);
+            updateHeaderSortVisual();
+        });
     </script>
     {% if stats and 'my_row' in stats %}
     <script>
@@ -555,6 +586,6 @@
         }
     });
     </script>
-
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1055;"></div>
 </body>
 </html>

@@ -971,3 +971,42 @@ body.dark-mode .badge.bg-soft-red {
         overflow-y: auto!important
     }
 }
+
+.custom-toast {
+    min-width: 200px;
+    max-width: 300px;
+    opacity: 0.9;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.custom-toast .toast-header {
+    background-color: var(--teal-light);
+    color: var(--teal-dark);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.custom-toast .toast-body {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+}
+
+body.dark-mode .custom-toast {
+    opacity: 0.95; /* Чуть заметнее в тёмной теме */
+}
+
+body.dark-mode .custom-toast .toast-header {
+    background-color: var(--teal-light);
+    color: var(--teal);
+}
+
+.custom-toast.show {
+    transform: translateY(0);
+    opacity: 0.9;
+}
+
+.custom-toast:not(.show) {
+    transform: translateY(20px);
+    opacity: 0;
+}
