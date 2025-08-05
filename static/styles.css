@@ -754,3 +754,40 @@ body.dark-mode .table tr.my-row td:first-child::before {
         color: var(--teal);
     }
 }
+.table td.consent-no {
+    background-color: var(--gray); /* Аналогично badge-gray из стилей, для выделения "Нет" как в ОВП/ВПП */
+    color: var(--text-color);
+    font-weight: bold;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    text-align: center;
+}
+body.dark-mode .table td.consent-no {
+    background-color: #394150; /* Адаптация для тёмной темы, как badge-gray в dark-mode [2] */
+    color: #9cb8cd;
+    border: 1px solid #374151;
+}
+.table td.consent-yes {
+    background-color: var(--teal); /* Убедимся, что "Да" выделяется一致но, как badge-teal [2] */
+    color: #fff;
+    font-weight: bold;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    text-align: center;
+}
+body.dark-mode .table td.consent-yes {
+    background-color: #20e3b2;
+    color: #22323d;
+}
+.badge.bg-soft-red {
+    background-color: rgba(220, 53, 69, 0.8);
+    color: #fff;
+    border: 1px solid rgba(220, 53, 69, 1);
+    font-weight: bold;
+}
+body.dark-mode .badge.bg-soft-red {
+    background-color: rgba(200, 48, 63, 0.9);
+    color: #f8f9fa;
+    border: 1px solid rgba(200, 48, 63, 1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
