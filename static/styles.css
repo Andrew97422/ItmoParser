@@ -27,8 +27,19 @@ body {
     background-color: var(--bg-color);
     color: var(--text-color);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    overflow-y: hidden; /* Убираем глобальную прокрутку */
     transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+@media (max-width: 992px) {
+    body {
+        overflow-y: auto; /* Явно разрешаем прокрутку на мобильных */
+    }
+
+    .table-container {
+        height: auto;
+        max-height: 400px;
+        overflow-y: auto;
+    }
 }
 
 .equal-height {
