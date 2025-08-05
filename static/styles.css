@@ -42,19 +42,39 @@ body {
 }
 
 @media (max-width: 992px) and (orientation: landscape) {
-    .table-container {
-        max-height: 70vh; /* Увеличиваем до 70% высоты вьюпорта в ландшафтном режиме */
-    }
-
-    /* Уменьшаем отступы и размеры для более компактного отображения */
-    .card-header, .card-body {
-        padding: 0.75rem;
-    }
-
-    /* Уменьшаем размер шрифта для заголовков в таблице для горизонтального режима */
-    .table thead th {
+    /* Значительно уменьшаем элементы выше таблицы */
+    .card-header {
+        padding: 0.4rem 0.6rem;
         font-size: 0.9rem;
+    }
+
+    /* Принудительно задаем большую высоту для таблицы */
+    .table-container {
+        height: calc(100vh - 120px); /* Намного меньше вычитаем */
+        max-height: none; /* Убираем ограничение max-height */
+    }
+
+    /* Уменьшаем высоту заголовков таблицы */
+    .table thead th {
+        padding-top: 0.3rem;
+        padding-bottom: 0.3rem;
+        font-size: 0.85rem;
+    }
+
+    /* Делаем более компактными ячейки */
+    .table td {
+        padding: 0.3rem 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    /* Уменьшаем или скрываем ненужные элементы */
+    .card-body {
         padding: 0.5rem;
+    }
+
+    /* Увеличиваем приоритет стилей */
+    .table-container {
+        height: calc(100vh - 120px) !important;
     }
 }
 
