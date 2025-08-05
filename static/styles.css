@@ -39,6 +39,26 @@ body {
         height: auto;
         max-height: 50vh;
     }
+
+    .equal-height {
+        min-height: auto;
+        display: block;
+    }
+
+    .col-lg-3, .col-lg-9 {
+        width: 100%;
+    }
+
+    .btn, .form-control, .form-select {
+        padding-top: 0.6rem;
+        padding-bottom: 0.6rem;
+        font-size: 1rem; /* Чуть больше размер для лучшего таппинга */
+    }
+
+    /* Увеличиваем область нажатия */
+    .btn-teal, .btn-outline-teal {
+        min-height: 44px; /* Рекомендованный Apple минимальный размер для тап-области */
+    }
 }
 
 @media (max-width: 992px) and (orientation: landscape) {
@@ -140,6 +160,8 @@ body {
 .table-container {
     height: calc(100vh - 220px);
     overflow-y: auto;
+    will-change: transform;
+    backface-visibility: hidden;
 }
 
 .table thead th {
@@ -171,17 +193,6 @@ body {
     transform: scale(1.05);
 }
 
-@media (max-width: 992px) {
-    .equal-height {
-        min-height: auto;
-        display: block;
-    }
-
-    .col-lg-3, .col-lg-9 {
-        width: 100%;
-    }
-}
-
 .form-select {
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2320c997' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
     background-repeat: no-repeat;
@@ -198,9 +209,9 @@ body {
     margin-left: 0.5rem !important;
 }
 
-.table-container {
+/*.table-container {
     height: calc(100vh - 240px);
-}
+}*/
 
 /* Стили для кнопки переключения темы */
 .theme-toggle {
@@ -502,4 +513,23 @@ body.dark-mode .form-control::placeholder {
     display: flex !important;
     align-items: center;
     margin-bottom: 0;     /* на всякий случай */
+}
+.table tbody tr {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@supports (-webkit-touch-callout: none) and (-webkit-appearance: none) {
+    .table-container {
+        height: auto !important;
+        max-height: 70vh !important;
+    }
+
+    body {
+        overflow-y: auto !important;
+    }
 }
