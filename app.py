@@ -4,6 +4,29 @@ import requests
 from dataclasses import dataclass
 from typing import List, Optional, Set, Dict
 import time
+from concurrent.futures import ThreadPoolExecutor
+
+executor = ThreadPoolExecutor(max_workers=2)
+
+def parse_and_cache(url):
+    try:
+        applicants = parse_itmo_rating(url)
+        app_data['cached_applicants'][url] = {'ts': time.time(), 'data': applicants}
+    except Exception as e:
+        print(f"Ошибка парсинга url={url}: {e}")
+
+def get_applicants_with_cache(url):
+    now = time.time()
+    entry = app_data['cached_applicants'].get(url)
+    if entry and now - entry['ts'] < CACHE_TTL:
+        return entry['data']
+    if entry:
+        executor.submit(parse_and_cache, url)
+        return entry['data']
+    data = parse_itmo_rating(url)
+    app_data['cached_applicants'][url] = {'ts': now, 'data': data}
+    return data
+
 
 app = Flask(__name__)
 
@@ -33,17 +56,6 @@ class Applicant:
     filtered_position: int = 0
 
 
-def get_applicants_with_cache(url):
-    now = time.time()
-    entry = app_data['cached_applicants'].get(url)
-    if entry and now - entry['ts'] < CACHE_TTL:
-        return entry['data']
-    applicants = parse_itmo_rating(url)
-    app_data['cached_applicants'][url] = {'ts': now, 'data': applicants}
-    return applicants
-
-
-
 def get_unique_exam_types(applicants: List[Applicant]) -> Set[str]:
     """Получаем уникальные виды испытаний из списка абитуриентов"""
     return {app.exam_type for app in applicants if app.exam_type.strip()}
@@ -62,7 +74,9 @@ def filter_applicants(
         exam_score_op: Optional[str] = None,
         exam_score_val: Optional[str] = None,
         total_score_op: Optional[str] = None,
-        total_score_val: Optional[str] = None
+        total_score_val: Optional[str] = None,
+        priority_min: Optional[int] = None,
+        priority_max: Optional[int] = None
 ) -> Dict:
     filtered = applicants
 
@@ -93,6 +107,13 @@ def filter_applicants(
             filtered = [a for a in filtered if a.exam_type != "ВЭ"]
         else:
             filtered = [a for a in filtered if a.exam_type == exam_type]
+
+    priority_min, priority_max = min(priority_min, priority_max), max(priority_min, priority_max)
+
+    if priority_min is not None:
+        filtered = [a for a in filtered if a.priority >= priority_min]
+    if priority_max is not None:
+        filtered = [a for a in filtered if a.priority <= priority_max]
 
     if average_score_op and average_score_val:
         try:
@@ -192,6 +213,7 @@ def parse_itmo_rating(url: str) -> List[Applicant]:
 @app.route('/', methods=['GET', 'POST'])
 def index():
     default_url = "https://abit.itmo.ru/rating/master/budget/2225"
+
     result = {
         'applicants': [],
         'total_count': 0,
@@ -211,6 +233,19 @@ def index():
         def parse_tri_state(value):
             return None if value == 'any' else value == 'yes'
 
+        priority_min = request.form.get('priority_min')
+        priority_max = request.form.get('priority_max')
+
+        try:
+            priority_min = int(priority_min) if priority_min else None
+        except Exception:
+            priority_min = None
+
+        try:
+            priority_max = int(priority_max) if priority_max else None
+        except Exception:
+            priority_max = None
+
         filters = {
             'ovp': parse_tri_state(request.form.get('ovp', 'any')),
             'vpp': parse_tri_state(request.form.get('vpp', 'any')),
@@ -225,7 +260,10 @@ def index():
             'exam_score_op': request.form.get('exam_score_op', ''),
             'exam_score_val': request.form.get('exam_score_val', ''),
             'total_score_op': request.form.get('total_score_op', ''),
-            'total_score_val': request.form.get('total_score_val', '')
+            'total_score_val': request.form.get('total_score_val', ''),
+
+            'priority_min': priority_min,
+            'priority_max': priority_max,
         }
 
         try:
@@ -250,6 +288,8 @@ def index():
                 exam_score_val=filters.get('exam_score_val'),
                 total_score_op=filters.get('total_score_op'),
                 total_score_val=filters.get('total_score_val'),
+                priority_min=priority_min,
+                priority_max=priority_max,
             )
 
         except Exception as e:
